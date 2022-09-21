@@ -2,10 +2,10 @@
 
 int main()
 {
-    Vector v1(9.1, 23);
-    Vector v2(3, -5);
+    Vector v1(1, 0, 0);
+    Vector v2(-1, 0, 0);
 
-    Vector v3 = v1 + v2;
+    Vector v3 = v1 * v2;
 
     v3.printCoordinate();
 
