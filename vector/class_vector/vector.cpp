@@ -1,13 +1,12 @@
 #include "vector.hpp"
 
-
-
-
 void Vector::addVector(double x, double y, double z)
 {
     m_x += x;
     m_y += y;
     m_z += z;
+
+    m_sync = false;
 }
 
 void Vector::subVector(double x, double y, double z)
@@ -15,6 +14,8 @@ void Vector::subVector(double x, double y, double z)
     m_x -= x;
     m_y -= y;
     m_z -= z;
+
+    m_sync = false;
 }
 
 
@@ -23,6 +24,8 @@ void Vector::mulVector(double n_times)
     m_x *= n_times;
     m_y *= n_times;
     m_z *= n_times;
+
+    m_sync = false;
 }
 
 
@@ -31,6 +34,8 @@ void Vector::mulVector(double xN_times, double yN_times, double zN_times)
     m_x *= xN_times;
     m_y *= yN_times;
     m_z *= zN_times;
+
+    m_sync = false;
 }
 
 
@@ -44,6 +49,8 @@ void Vector::divVector(double n_times)
     m_x /= n_times;
     m_y /= n_times;
     m_z /= n_times;
+
+    m_sync = false;
 }
 
 
@@ -57,11 +64,20 @@ void Vector::divVector(double xN_times, double yN_times, double zN_times)
     m_x /= xN_times;
     m_y /= yN_times;
     m_z /= zN_times;
+
+    m_sync = false;
 }
 
 double Vector::scalarProduct(const Vector &v2)
 {
     return (v2.m_x * m_x + v2.m_y * m_y + v2.m_z * m_z);
+}
+
+
+void Vector::synchronization()
+{
+    m_sqrLen = m_x*m_x + m_y*m_y + m_z*m_z;
+    m_sync   = true;
 }
 
 

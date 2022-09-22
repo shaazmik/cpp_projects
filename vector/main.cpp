@@ -1,13 +1,14 @@
-#include "clock.hpp"
+#include "general.hpp"
+#include <unistd.h>
 
 int main()
 {
-    Vector v1(1, 0, 0);
-    Vector v2(-1, 0, 0);
-
-    Vector v3 = v1 * v2;
-
-    v3.printCoordinate();
+    Vector v1(1, 1, 0);
+    CoordinateSystem coorSys1(3, 2, 0, 0);
+    
+    Graphics scene1;
+    scene1.printCoordinateSystem(coorSys1, 960, 1080);
+    
 
     return 0;
 }

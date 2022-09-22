@@ -1,28 +1,29 @@
 #ifndef COORDINATE_H
 #define COORDINATE_H
 
-#include <math.h>
+#include "../vector_math.hpp"
 
-
-const int Width  = 600;
-const int Height = 600;
 class CoordinateSystem
 {
 public:
     CoordinateSystem() = default;
 
-    CoordinateSystem(double xMax, double yMax) : 
-    m_xMax(xMax), m_yMax(yMax), 
-    m_xScale(Width/xMax), m_yScale(Height/yMax),
-    m_x0(xMax/2), m_y0(yMax/2)
+    CoordinateSystem(double xMax, double yMax, double x0, double y0) : 
+    m_xMax(xMax), m_yMax(yMax),
+    m_x0(x0), m_y0(y0)
     {
     }
 
-
 private:
     double m_xMax, m_yMax     = NAN;
-    double m_xScale, m_yScale = NAN;
     double m_x0, m_y0         = NAN;
+    double m_xScale, m_yScale = NAN;
+    double m_width, m_height  = NAN;
+    double m_winX0, m_winY0   = NAN;
+
+    bool m_sync = true;
+
+    friend class Graphics;
 
 };
 

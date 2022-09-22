@@ -1,11 +1,8 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <math.h>
 #include <stdio.h>
-
-const size_t Poison  = -1337;
-const double Epsylon = 0.0000001;
+#include "../vector_math.hpp"
 
 class Vector
 {
@@ -45,10 +42,14 @@ public:
 
     double scalarProduct(const Vector &v2);
 
+    void synchronization();
+
 private:
 
     double m_x, m_y, m_z = NAN;
     double m_sqrLen      = NAN;
+
+    bool m_sync = true;
 
     bool isEqualFloat(double first, double second);
     
@@ -57,6 +58,9 @@ private:
     friend Vector operator -(const Vector &v1, const Vector &v2);
 
     friend Vector operator *(const Vector &v1, const Vector &v2);
+
+    friend class Graphics;
+
 };
 
 
