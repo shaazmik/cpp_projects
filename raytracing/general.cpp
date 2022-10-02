@@ -1,7 +1,10 @@
 #include "general.hpp"
 #include <stdio.h>
 
-void Graphics::printCoordinateSystem(class CoordinateSystem& decartSys, float width, float height)
+
+const double zViewer = 400;
+
+void Graphics::printCoordinateSystem(class CoordinateSystem& decartSys, int width, int height)
 {
     decartSys.m_height = height;
     decartSys.m_width  = width;
@@ -30,7 +33,8 @@ void Graphics::printCoordinateSystem(class CoordinateSystem& decartSys, float wi
     decartSys.m_winY0 = m_winYCenter - decartSys.m_yScale*decartSys.m_y0;
     
     rectangle.setPosition(decartSys.m_winX0 - width/2, decartSys.m_winY0 - height/2);
-    rectangle.setFillColor(sf::Color(40, 20, 30));
+    rectangle.setFillColor(sf::Color(decartSys.m_colorRed, decartSys.m_colorGreen, decartSys.m_colorBlue));
+
     m_window.draw(rectangle);
 }
 
@@ -52,6 +56,117 @@ void Graphics::printVector(class Vector vector, class CoordinateSystem decartSys
     m_window.display();
 }
 
+
+void Graphics::rayCastingSphere(class Sphere sphere, class CoordinateSystem& decartSys)
+{
+    printCoordinateSystem(decartSys, m_width, m_height);
+
+    sf::Texture texture {};
+    texture.create (m_width, m_height);
+    
+    sf::Sprite sprite (texture);
+
+    double xLight  = convertPixXCoord(m_xLight, decartSys);
+    double yLight  = convertPixYCoord(m_yLight, decartSys);
+    double zLight  = m_zLight; 
+
+    size_t pixelIndex = 0;
+
+    double sqrR = sphere.m_R * sphere.m_R;
+
+    for (int y = decartSys.m_yMax; y > -decartSys.m_yMax; y--)
+    {
+        for (int x = -decartSys.m_xMax; x < decartSys.m_xMax; x++)
+        {
+            decartSys.pixels[pixelIndex++] = sphere.m_colorRed;  
+            decartSys.pixels[pixelIndex++] = sphere.m_colorGreen;   
+            decartSys.pixels[pixelIndex++] = sphere.m_colorBlue;
+
+            double z = sqrR - x*x - y*y;
+
+            double Irgb = 0;
+            double Amb  = 0.1;
+            double Dif  = 0;
+
+            if (z >= 0)
+            {
+                Irgb += Amb;
+
+                z = sqrt(z);
+
+                Vector lightVec(xLight - x,      yLight - y,      zLight - z);
+                Vector normal  (x - sphere.m_x0, y - sphere.m_y0, z - sphere.m_z0);
+
+                double cosPhi = dotProduct(lightVec, normal) / (sqrt(lightVec.m_sqrLen) * sqrt(normal.m_sqrLen));
+                
+                if (cosPhi < 0)
+                {
+                    decartSys.pixels[pixelIndex++] = Irgb * 255;
+                }
+                else
+                {
+                    Dif  = cosPhi;
+                    Irgb+= Dif;
+
+                    if (Irgb > 1) 
+                    {
+                        Irgb = 1;
+                    }
+
+                    decartSys.pixels[pixelIndex++] = Irgb * 255;
+                }
+            }
+            else
+            {
+                decartSys.pixels[pixelIndex++] = Irgb;
+            }
+        }
+    }
+
+    texture.update(decartSys.pixels);
+
+    m_window.draw(sprite);
+}
+
+void Graphics::launchRayCasting(class Sphere sphere, class CoordinateSystem coord)
+{
+    m_zLight = m_DefaultZ;
+
+    while (m_window.isOpen())
+    {   
+        sf::Event event;
+
+        while (m_window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                m_window.close();
+
+            if (event.type == sf::Event::MouseMoved)
+            {
+                m_xLight = event.mouseMove.x;
+                m_yLight = event.mouseMove.y;
+            }
+            
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Up)
+                {
+                    m_zLight += 50;
+                }
+                else if (event.key.code == sf::Keyboard::Down)
+                {
+                    m_zLight -= 50;
+                }
+            }
+        }
+
+        rayCastingSphere(sphere, coord);
+
+        m_window.display();
+        m_window.clear();
+    }
+}
+
 void Graphics::cleanWindow()
 {
     m_window.clear();
@@ -59,32 +174,22 @@ void Graphics::cleanWindow()
 }
 
 
-// void printVector(class Vector vector, class CoordinateSystem coordinateSys, double x_place, double y_place)
-// {
-//     sf::RenderWindow window;
-//     window.create(sf::VideoMode(Width, Height), "VectorWin");
+double Graphics::convertPixXCoord(int pixPos, class CoordinateSystem coord)
+{
+    if (abs(coord.m_xScale) < Epsylon)
+    {
+        return 0;
+    }
+    
+    return ((pixPos - m_winXCenter)/coord.m_xScale);
+}
 
-
-//     sf::RectangleShape rectangle(sf::Vector2f(Width, Height));
-
-//     rectangle.setFillColor(sf::Color(255, 204, 255));
-
-//     while (window.isOpen())
-//     {   
-//         sf::Event event;
-
-//         window.draw(rectangle);
-
-//         drawVector(vector, x_scale, y_scale, x_place, y_place);
-
-//         while (window.pollEvent(event))
-//         {
-//             if (event.type == sf::Event::Closed)
-//                 window.close();
-//         }
-
-//         window.display();
-//     }
-
-//     return;
-// }
+double Graphics::convertPixYCoord(int pixPos, class CoordinateSystem coord)
+{
+    if (abs(coord.m_yScale) < Epsylon)
+    {
+        return 0;
+    }
+    
+    return ((m_winYCenter - pixPos)/coord.m_yScale);
+}

@@ -7,4 +7,5 @@ const size_t Poison  = -1337;
 const double Epsylon = 0.0000001;
 
 
+
 #endif
