@@ -1,0 +1,6 @@
+OBJECT |curWidget| and ID:0
+OVERFLOW VAR:|m_count = 0| in func:"add"
+OBJECT |curWidget| and ID:1
+OVERFLOW VAR:|m_count = 1| in func:"add"
+OBJECT |curWidget| and ID:2
+OVERFLOW VAR:|m_count = 2| in func:"add"

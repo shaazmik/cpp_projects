@@ -14,14 +14,19 @@ public:
         Widget(mainWin, width, height)
         {}
 
-    ~AbstractBtn();
-
-    void abstractBtnController(sf::Event event);
+    ~AbstractBtn() = default;
 
 private:
     
     bool clicked = false;
     bool press   = false;
 };
+
+
+class AbstractBtnManager : public WidgetManager
+{
+
+};
+
 
 #endif

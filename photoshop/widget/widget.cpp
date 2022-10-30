@@ -28,6 +28,27 @@ double Widget::getPosY()
     return m_posY;
 }
 
+void WidgetManager::draw()
+{
+    for (int i = 0; i < m_count; i++)
+    {
+        m_widgetArr[i]->draw();
+    }
+}
+
+void WidgetManager::add(Widget* curWidget)
+{
+    if (m_count + 1 > m_size)
+    {   
+        LOG_OBJECT(m_count, curWidget);
+        LOG_OVERFLOW(m_count);
+        return;
+    }
+
+    m_widgetArr[m_count] = curWidget;
+    m_count++;
+}
+
 // Нам надо делать тулы(инструменты)
 // Множество классов с разным поведением, которые мы объединяем с помощью базового класса,
 // основная идея ООП в С++, ДИНАМИЧЕСКИЙ ПОЛИМОРФИЗМ

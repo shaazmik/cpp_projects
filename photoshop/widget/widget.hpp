@@ -32,8 +32,8 @@ public:
 private:
     int m_width  = WinWidth;
     int m_height = WinHeight;
-    int m_posX   = 0.0;
-    int m_posY   = 0.0;
+    double m_posX   = 0;
+    double m_posY   = 0;
 
     sf::RectangleShape m_rectangle;
 
@@ -46,9 +46,10 @@ protected:
 class WidgetManager
 {
 public:
-    WidgetManager(int count)
+    WidgetManager(int size):m_size(size)
     {
-        m_widgetArr = new Widget*[count];
+        m_widgetArr = new Widget*[size];
+        m_count = 0;
     }
 
    ~WidgetManager()
@@ -56,8 +57,15 @@ public:
 
    }
 
+    void draw();
+
+    void add(Widget* curWidget);
 
 private:
+    int m_size = 0;
+
+    int m_count = 0;
+
     Widget** m_widgetArr = nullptr;
 
 };

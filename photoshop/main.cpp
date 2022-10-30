@@ -2,34 +2,44 @@
 
 int main()
 {
+
     Graphics win1(1920, 1080);
 
-    Widget test1(&win1, 30, 20);
+    Widget wid1(&win1, 300, 150);
 
-    test1.move(25, 100);
+    wid1.move(100, 30);
+    wid1.setColor();
 
-    AbstractBtn button1(&win1, 80, 90);
+    Widget wid2(&win1, 150, 10);
 
-    button1.move(150, 50);
-    button1.setColor();
-    test1.setColor();
+    AbstractBtn btn1(&win1, 10, 15);
 
-    while (win1.isOpen())
-    {
-        sf::Event event;
+    btn1.move(5, 600);
 
-        while (win1.m_window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                win1.m_window.close();
-            }
-        }
-        
-        test1.draw();
-        button1.draw();
+    WidgetManager widManager1(20);
+    widManager1.add(&wid1);
+    widManager1.add(&wid2);
+    widManager1.add(&btn1);
+    widManager1.draw();
+    win1.display();
+    sleep(2);
+    win1.clear();
 
-        win1.display();
-        win1.clear();
-    }
+    // while (win1.isOpen())
+    // {
+    //     sf::Event event;
+
+    //     while (win1.m_window.pollEvent(event))
+    //     {
+    //         if (event.type == sf::Event::Closed)
+    //         {
+    //             win1.m_window.close();
+    //         }
+    //     }
+
+    //     win1.display();
+    //     win1.clear();
+    // }
+
+    return 0;
 }
