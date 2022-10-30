@@ -10,7 +10,23 @@ void Widget::setColor()
     m_mainWin->setFillColor(m_rectangle, sf::Color::Magenta);
 }
 
+void Widget::move(float xOffset, float yOffset)
+{
+    m_posX += xOffset;
+    m_posY += yOffset;
+    m_mainWin->move(m_rectangle, xOffset, yOffset);
+}
 
+
+double Widget::getPosX()
+{
+    return m_posX;
+}
+
+double Widget::getPosY()
+{
+    return m_posY;
+}
 
 // Нам надо делать тулы(инструменты)
 // Множество классов с разным поведением, которые мы объединяем с помощью базового класса,
