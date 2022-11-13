@@ -5,9 +5,9 @@ void Widget::draw()
     m_mainWin->m_window.draw(m_rectangle);
 }
 
-void Widget::setColor()
+void Widget::setColor(PsColor& color)
 {
-    m_mainWin->setFillColor(m_rectangle, sf::Color::Magenta);
+    m_mainWin->setFillColor(m_rectangle, color);
 }
 
 void Widget::move(float xOffset, float yOffset)

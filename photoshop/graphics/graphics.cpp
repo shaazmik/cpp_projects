@@ -5,9 +5,9 @@ void Graphics::setSize(sf::RectangleShape& widget, const int width, const int he
     widget.setSize(sf::Vector2f(width, height));
 }
 
-void Graphics::setFillColor(sf::RectangleShape& widget, const sf::Color& color)
+void Graphics::setFillColor(sf::RectangleShape& widget, PsColor& color)
 {
-    widget.setFillColor(color);
+    widget.setFillColor(color.m_currentClr);
 }
 
 sf::Vector2f Graphics::getPosition(sf::RectangleShape* widget)

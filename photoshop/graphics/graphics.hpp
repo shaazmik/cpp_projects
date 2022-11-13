@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "../constants.hpp"
 #include "../log/log.hpp"
+#include "./pscolor.hpp"
 
 class Graphics
 {
@@ -23,7 +24,7 @@ public:
     
     void setSize(sf::RectangleShape& widget, const int width, const int height);
 
-    void setFillColor(sf::RectangleShape& widget, const sf::Color& color);
+    void setFillColor(sf::RectangleShape& widget, PsColor& color);
 
     sf::Vector2f getPosition(sf::RectangleShape* widget);
 
@@ -47,8 +48,6 @@ public:
 sf::RenderWindow m_window;
 
 private:
-    
-
     int m_width  = WinWidth;
     int m_height = WinHeight;
 

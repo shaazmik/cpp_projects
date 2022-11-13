@@ -22,7 +22,7 @@ public:
         m_mainWin = nullptr;
     }
 
-    void setColor();
+    void setColor(PsColor& color);
     void draw ();
     void close();
     double getPosX();
@@ -64,9 +64,10 @@ public:
 private:
     int m_size = 0;
 
-    int m_count = 0;
 
+protected:
     Widget** m_widgetArr = nullptr;
+    int m_count = 0;
 
 };
 
